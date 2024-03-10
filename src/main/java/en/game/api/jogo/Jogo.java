@@ -32,7 +32,7 @@ public class Jogo {
     private LocalDate dataLancamento;
     private String website;
 
-    @OneToOne(cascade = CascadeType.MERGE)
+    @OneToOne(cascade = CascadeType.PERSIST)
     private Desenvolvedor desenvolvedor;
 
     private String genero;
