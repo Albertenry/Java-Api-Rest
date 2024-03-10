@@ -38,8 +38,8 @@ public class Jogo {
     private String genero;
     private String urlCapa;
 
-    @OneToMany(cascade = CascadeType.PERSIST)
-    private Console[] console;
+    @OneToMany(cascade = CascadeType.MERGE)
+    private Console[] consoles;
 
 
     public Jogo(DadosCadastroJogos dados) {
@@ -50,6 +50,6 @@ public class Jogo {
         this.desenvolvedor = dados.desenvolvedor();
         this.genero = dados.genero();
         this.urlCapa = dados.urlCapa();
-        this.console = dados.consoles();
+        this.consoles = dados.consoles();
     }
 }
