@@ -1,25 +1,16 @@
 package en.game.api.jogo;
 
-import jakarta.persistence.Table;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.OneToMany;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+
+import lombok.*;
+
 import java.time.LocalDate;
 
-
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-
 @Entity(name = "Jogo")
 @Table(name = "jogos")
 public class Jogo {
@@ -32,6 +23,7 @@ public class Jogo {
     private LocalDate dataLancamento;
     private String website;
 
+    @Setter
     @OneToOne(cascade = CascadeType.PERSIST)
     private Desenvolvedor desenvolvedor;
 
@@ -40,7 +32,6 @@ public class Jogo {
 
     @OneToMany(cascade = CascadeType.MERGE)
     private Console[] consoles;
-
 
     public Jogo(DadosCadastroJogos dados) {
         this.nome = dados.nome();
@@ -52,4 +43,5 @@ public class Jogo {
         this.urlCapa = dados.urlCapa();
         this.consoles = dados.consoles();
     }
+
 }

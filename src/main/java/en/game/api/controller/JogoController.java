@@ -1,28 +1,40 @@
 package en.game.api.controller;
 
-
-import en.game.api.jogo.DadosCadastroJogos;
-import en.game.api.jogo.Jogo;
-import en.game.api.jogo.JogoRepository;
-import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+import en.game.api.jogo.*;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.transaction.Transactional;
+
 @RestController
 @RequestMapping("jogos")
 public class JogoController {
-    @Autowired
-    private JogoRepository repository;
+
+    private final JogoRepository jogoRepository;
+    private final DesenvolvedorRepository desenvolvedorRepository;
+
+    public JogoController(JogoRepository jogoRepository, DesenvolvedorRepository desenvolvedorRepository) {
+        this.jogoRepository = jogoRepository;
+        this.desenvolvedorRepository = desenvolvedorRepository;
+    }
 
     @PostMapping
     @Transactional
     public void cadastrar(@RequestBody DadosCadastroJogos dados) {
+        Desenvolvedor desenvolvedor;
 
-        repository.save(new Jogo(dados));
+        if (dados.desenvolvedor().getCodigo() == null) {
+            desenvolvedor = desenvolvedorRepository.save(dados.desenvolvedor());
+        } else {
+            desenvolvedor = desenvolvedorRepository.findById(dados.desenvolvedor().getCodigo())
+                    .orElseThrow(() -> new EntityNotFoundException("Desenvolvedor não encontrado com o código: " + dados.desenvolvedor().getCodigo()));
+        }
 
+        Jogo jogo = new Jogo(dados);
+        jogo.setDesenvolvedor(desenvolvedor);
+        jogoRepository.save(jogo);
     }
-
 }

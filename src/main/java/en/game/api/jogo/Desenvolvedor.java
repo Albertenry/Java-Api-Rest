@@ -25,6 +25,4 @@ public class Desenvolvedor {
     private LocalDate dataFundacao;
     private String website;
     private String sede;
-
-
 }
