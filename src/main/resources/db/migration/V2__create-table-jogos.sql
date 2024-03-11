@@ -1,8 +1,8 @@
--- V1__create-table-jogos.sql
+-- V2__create-table-jogos.sql
 
 create table jogos (
     codigo serial primary key,
-    codigo_desenvolvedor  integer references desenvolvedores (codigo),
+    codigo_desenvolvedor integer not null references desenvolvedores (codigo),
     nome varchar(255) not null,
     descricao text,
     data_lancamento date,
