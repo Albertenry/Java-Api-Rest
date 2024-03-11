@@ -21,7 +21,9 @@ public class Console {
     private String empresa;
 
     public Console(ConsoleDTO dados) {
-        codigo = dados.codigo();
+        if (dados.codigo() != null) {
+            codigo = dados.codigo();
+        }
         nome = dados.nome();
         dataLancamento = dados.dataLancamento();
         empresa = dados.empresa();
