@@ -1,5 +1,7 @@
 package en.game.api.controller;
 
+import en.game.api.domain.console.Console;
+import en.game.api.domain.desenvolvedor.Desenvolvedor;
 import en.game.api.domain.jogo.Jogo;
 import en.game.api.domain.jogo.JogoDTO;
 import en.game.api.domain.jogo.JogoRepository;
@@ -67,6 +69,11 @@ public class JogoController {
                     jogo.setWebsite(dados.website());
                     jogo.setDataLancamento(dados.dataLancamento());
                     jogo.setUrlCapa(dados.urlCapa());
+                    jogo.setDesenvolvedor(new Desenvolvedor(dados.desenvolvedor()));
+                    jogo.setConsoles(dados.consoles()
+                            .stream()
+                            .map(Console::new)
+                            .toList());
                     Jogo jogoAtualizado = jogoRepository.save(jogo);
                     return ResponseEntity.ok().body(jogoAtualizado);
                 }).orElse(ResponseEntity.notFound().build());

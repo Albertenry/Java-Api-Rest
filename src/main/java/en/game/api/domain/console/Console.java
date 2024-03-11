@@ -2,7 +2,6 @@ package en.game.api.domain.console;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDate;
 
 @Getter
