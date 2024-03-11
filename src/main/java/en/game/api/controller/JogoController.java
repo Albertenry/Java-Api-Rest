@@ -67,8 +67,8 @@ public class JogoController {
                     jogo.setWebsite(dados.website());
                     jogo.setDataLancamento(dados.dataLancamento());
                     jogo.setUrlCapa(dados.urlCapa());
-                    Jogo jogoUpdated = jogoRepository.save(jogo);
-                    return ResponseEntity.ok().body(jogoUpdated);
+                    Jogo jogoAtualizado = jogoRepository.save(jogo);
+                    return ResponseEntity.ok().body(jogoAtualizado);
                 }).orElse(ResponseEntity.notFound().build());
     }
 }
