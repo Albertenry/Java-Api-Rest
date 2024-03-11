@@ -1,5 +1,7 @@
 package en.game.api.domain.jogo;
 
+import en.game.api.domain.console.Console;
+import en.game.api.domain.console.ConsoleDTO;
 import en.game.api.domain.desenvolvedor.Desenvolvedor;
 import jakarta.persistence.*;
 import lombok.*;
@@ -7,6 +9,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -31,8 +34,15 @@ public class Jogo {
     @OnDelete(action = OnDeleteAction.RESTRICT)
     private Desenvolvedor desenvolvedor;
 
-    public Jogo(JogoDTO dados) {
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @JoinTable(
+            name = "jogos_consoles",
+            joinColumns = @JoinColumn(name = "jogo_codigo"),
+            inverseJoinColumns = @JoinColumn(name = "console_codigo")
+    )
+    private List<Console> consoles;
 
+    public Jogo(JogoDTO dados) {
         nome = dados.nome();
         descricao = dados.descricao();
         dataLancamento = dados.dataLancamento();
@@ -40,5 +50,10 @@ public class Jogo {
         genero = dados.genero();
         urlCapa = dados.urlCapa();
         desenvolvedor = new Desenvolvedor(dados.desenvolvedor());
+
+        consoles = dados.consoles()
+                .stream()
+                .map(Console::new)
+                .toList();
     }
 }

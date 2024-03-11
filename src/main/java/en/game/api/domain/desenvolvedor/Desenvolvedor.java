@@ -22,7 +22,7 @@ public class Desenvolvedor {
        private String sede;
 
        public Desenvolvedor(DesenvolvedorDTO dados) {
-              if (dados.codigo() > 0) {
+              if (dados.codigo() != null) {
                      codigo = dados.codigo();
               }
               nome = dados.nome();

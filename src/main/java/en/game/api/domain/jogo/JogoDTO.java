@@ -1,8 +1,10 @@
 package en.game.api.domain.jogo;
 
+import en.game.api.domain.console.ConsoleDTO;
 import en.game.api.domain.desenvolvedor.DesenvolvedorDTO;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public record JogoDTO(
         String nome,
@@ -11,6 +13,7 @@ public record JogoDTO(
         String website,
         String genero,
         String urlCapa,
-        DesenvolvedorDTO desenvolvedor
+        DesenvolvedorDTO desenvolvedor,
+        List<ConsoleDTO> consoles
 ) {
 }
