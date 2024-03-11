@@ -10,8 +10,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "codigo")
-@Entity(name = "Jogo")
-@Table(name = "jogos")
+@Entity(name = "Console")
+@Table(name = "consoles")
 public class Console {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
