@@ -1,7 +1,6 @@
 package en.game.api.domain.jogo;
 
 import en.game.api.domain.console.Console;
-import en.game.api.domain.console.ConsoleDTO;
 import en.game.api.domain.desenvolvedor.Desenvolvedor;
 import jakarta.persistence.*;
 import lombok.*;

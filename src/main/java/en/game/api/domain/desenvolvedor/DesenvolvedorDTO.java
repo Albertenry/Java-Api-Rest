@@ -8,5 +8,5 @@ public record DesenvolvedorDTO(
         LocalDate dataFundacao,
         String website,
         String sede
-)  {
+) {
 }

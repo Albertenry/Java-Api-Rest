@@ -5,11 +5,10 @@ import en.game.api.domain.desenvolvedor.Desenvolvedor;
 import en.game.api.domain.jogo.Jogo;
 import en.game.api.domain.jogo.JogoDTO;
 import en.game.api.domain.jogo.JogoRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import jakarta.transaction.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -39,8 +38,8 @@ public class JogoController {
         return new ResponseEntity<>(jogos, HttpStatus.OK);
     }
 
-    @GetMapping(path="/{id}")
-    public ResponseEntity<Optional<Jogo>> pegarPorId(@PathVariable Long id){
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<Optional<Jogo>> pegarPorId(@PathVariable Long id) {
         Optional<Jogo> jogo;
         jogo = jogoRepository.findById(id);
         if (jogo.isPresent()) {
@@ -49,8 +48,8 @@ public class JogoController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @DeleteMapping(path="/{id}")
-    public ResponseEntity<Optional<Jogo>> deletarPorId(@PathVariable Long id){
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<Optional<Jogo>> deletarPorId(@PathVariable Long id) {
         try {
             jogoRepository.deleteById(id);
             return new ResponseEntity<>(HttpStatus.OK);
@@ -59,23 +58,25 @@ public class JogoController {
         }
     }
 
-    @PutMapping(value="/{id}")
-    public ResponseEntity<Jogo> update(@PathVariable Long id, @RequestBody JogoDTO dados){
-        return jogoRepository.findById(id)
-                .map(jogo -> {
-                    jogo.setNome(dados.nome());
-                    jogo.setDescricao(dados.descricao());
-                    jogo.setGenero(dados.genero());
-                    jogo.setWebsite(dados.website());
-                    jogo.setDataLancamento(dados.dataLancamento());
-                    jogo.setUrlCapa(dados.urlCapa());
-                    jogo.setDesenvolvedor(new Desenvolvedor(dados.desenvolvedor()));
-                    jogo.setConsoles(dados.consoles()
-                            .stream()
-                            .map(Console::new)
-                            .toList());
-                    Jogo jogoAtualizado = jogoRepository.save(jogo);
-                    return ResponseEntity.ok().body(jogoAtualizado);
-                }).orElse(ResponseEntity.notFound().build());
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Jogo> update(@PathVariable Long id, @RequestBody JogoDTO dados) {
+        Optional<Jogo> optional = jogoRepository.findById(id);
+        if (optional.isPresent()) {
+            Jogo jogo = optional.get();
+            jogo.setNome(dados.nome());
+            jogo.setDescricao(dados.descricao());
+            jogo.setGenero(dados.genero());
+            jogo.setWebsite(dados.website());
+            jogo.setDataLancamento(dados.dataLancamento());
+            jogo.setUrlCapa(dados.urlCapa());
+            jogo.setDesenvolvedor(new Desenvolvedor(dados.desenvolvedor()));
+            jogo.setConsoles(dados.consoles()
+                    .stream()
+                    .map(Console::new)
+                    .toList());
+            jogoRepository.save(jogo);
+            return new ResponseEntity<>(jogo, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

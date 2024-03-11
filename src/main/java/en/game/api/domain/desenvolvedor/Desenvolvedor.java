@@ -13,21 +13,21 @@ import java.time.LocalDate;
 @Entity(name = "Desenvolvedor")
 @Table(name = "desenvolvedores")
 public class Desenvolvedor {
-       @Id
-       @GeneratedValue(strategy = GenerationType.IDENTITY)
-       private Long codigo;
-       private String nome;
-       private LocalDate dataFundacao;
-       private String website;
-       private String sede;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long codigo;
+    private String nome;
+    private LocalDate dataFundacao;
+    private String website;
+    private String sede;
 
-       public Desenvolvedor(DesenvolvedorDTO dados) {
-              if (dados.codigo() != null) {
-                     codigo = dados.codigo();
-              }
-              nome = dados.nome();
-              dataFundacao = dados.dataFundacao();
-              website = dados.website();
-              sede = dados.sede();
-       }
+    public Desenvolvedor(DesenvolvedorDTO dados) {
+        if (dados.codigo() != null) {
+            codigo = dados.codigo();
+        }
+        nome = dados.nome();
+        dataFundacao = dados.dataFundacao();
+        website = dados.website();
+        sede = dados.sede();
+    }
 }
