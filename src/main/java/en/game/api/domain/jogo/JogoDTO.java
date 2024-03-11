@@ -1,4 +1,6 @@
-package en.game.api.jogo;
+package en.game.api.domain.jogo;
+
+import en.game.api.domain.desenvolvedor.DesenvolvedorDTO;
 
 import java.time.LocalDate;
 
@@ -8,6 +10,7 @@ public record JogoDTO(
         LocalDate dataLancamento,
         String website,
         String genero,
-        String urlCapa
+        String urlCapa,
+        DesenvolvedorDTO desenvolvedor
 ) {
 }

@@ -1,4 +1,4 @@
-package en.game.api.jogo;
+package en.game.api.domain.jogo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

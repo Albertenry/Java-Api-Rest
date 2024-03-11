@@ -1,4 +1,4 @@
-package en.game.api.desenvolvedor;
+package en.game.api.domain.desenvolvedor;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -22,6 +22,9 @@ public class Desenvolvedor {
        private String sede;
 
        public Desenvolvedor(DesenvolvedorDTO dados) {
+              if (dados.codigo() > 0) {
+                     codigo = dados.codigo();
+              }
               nome = dados.nome();
               dataFundacao = dados.dataFundacao();
               website = dados.website();

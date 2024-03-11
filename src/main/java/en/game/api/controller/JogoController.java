@@ -1,14 +1,14 @@
 package en.game.api.controller;
 
-import en.game.api.jogo.*;
-import jakarta.persistence.EntityNotFoundException;
+import en.game.api.domain.jogo.Jogo;
+import en.game.api.domain.jogo.JogoDTO;
+import en.game.api.domain.jogo.JogoRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.transaction.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;

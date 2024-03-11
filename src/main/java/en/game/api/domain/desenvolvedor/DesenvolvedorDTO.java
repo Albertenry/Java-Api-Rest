@@ -1,4 +1,4 @@
-package en.game.api.desenvolvedor;
+package en.game.api.domain.desenvolvedor;
 
 import java.time.LocalDate;
 
