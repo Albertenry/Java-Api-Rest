@@ -2,39 +2,72 @@ package en.game.api.controller;
 
 import en.game.api.jogo.*;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import jakarta.transaction.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("jogos")
 public class JogoController {
 
     private final JogoRepository jogoRepository;
-    private final DesenvolvedorRepository desenvolvedorRepository;
 
-    public JogoController(JogoRepository jogoRepository, DesenvolvedorRepository desenvolvedorRepository) {
+    public JogoController(JogoRepository jogoRepository) {
         this.jogoRepository = jogoRepository;
-        this.desenvolvedorRepository = desenvolvedorRepository;
     }
 
     @PostMapping
     @Transactional
-    public void cadastrar(@RequestBody DadosCadastroJogos dados) {
-        Desenvolvedor desenvolvedor;
-
-        if (dados.desenvolvedor().getCodigo() == null) {
-            desenvolvedor = desenvolvedorRepository.save(dados.desenvolvedor());
-        } else {
-            desenvolvedor = desenvolvedorRepository.findById(dados.desenvolvedor().getCodigo())
-                    .orElseThrow(() -> new EntityNotFoundException("Desenvolvedor não encontrado com o código: " + dados.desenvolvedor().getCodigo()));
-        }
-
+    public void cadastrar(@RequestBody JogoDTO dados) {
         Jogo jogo = new Jogo(dados);
-        jogo.setDesenvolvedor(desenvolvedor);
         jogoRepository.save(jogo);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Jogo>> listarTodos() {
+        List<Jogo> jogos = jogoRepository.findAll();
+        return new ResponseEntity<>(jogos, HttpStatus.OK);
+    }
+
+    @GetMapping(path="/{id}")
+    public ResponseEntity<Optional<Jogo>> pegarPorId(@PathVariable Long id){
+        Optional<Jogo> jogo;
+        jogo = jogoRepository.findById(id);
+        if (jogo.isPresent()) {
+            return new ResponseEntity<>(jogo, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @DeleteMapping(path="/{id}")
+    public ResponseEntity<Optional<Jogo>> deletarPorId(@PathVariable Long id){
+        try {
+            jogoRepository.deleteById(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (NoSuchElementException erro) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping(value="/{id}")
+    public ResponseEntity<Jogo> update(@PathVariable Long id, @RequestBody JogoDTO dados){
+        return jogoRepository.findById(id)
+                .map(jogo -> {
+                    jogo.setNome(dados.nome());
+                    jogo.setDescricao(dados.descricao());
+                    jogo.setGenero(dados.genero());
+                    jogo.setWebsite(dados.website());
+                    jogo.setDataLancamento(dados.dataLancamento());
+                    jogo.setUrlCapa(dados.urlCapa());
+                    Jogo jogoUpdated = jogoRepository.save(jogo);
+                    return ResponseEntity.ok().body(jogoUpdated);
+                }).orElse(ResponseEntity.notFound().build());
     }
 }
