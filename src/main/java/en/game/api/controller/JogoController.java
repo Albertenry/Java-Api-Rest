@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("jogos")
@@ -70,10 +71,11 @@ public class JogoController {
             jogo.setDataLancamento(dados.dataLancamento());
             jogo.setUrlCapa(dados.urlCapa());
             jogo.setDesenvolvedor(new Desenvolvedor(dados.desenvolvedor()));
-            jogo.setConsoles(dados.consoles()
+            List<Console> consoles = dados.consoles()
                     .stream()
                     .map(Console::new)
-                    .toList());
+                    .collect(Collectors.toList());
+            jogo.setConsoles(consoles);
             jogoRepository.save(jogo);
             return new ResponseEntity<>(jogo, HttpStatus.OK);
         }
