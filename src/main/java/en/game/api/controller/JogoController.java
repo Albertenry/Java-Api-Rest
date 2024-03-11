@@ -25,9 +25,10 @@ public class JogoController {
 
     @PostMapping
     @Transactional
-    public void cadastrar(@RequestBody JogoDTO dados) {
+    public ResponseEntity<Jogo> cadastrar(@RequestBody JogoDTO dados) {
         Jogo jogo = new Jogo(dados);
         jogoRepository.save(jogo);
+        return new ResponseEntity<>(jogo, HttpStatus.CREATED);
     }
 
     @GetMapping

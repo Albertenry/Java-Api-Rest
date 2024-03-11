@@ -2,7 +2,7 @@
 
 create table jogos (
     codigo serial primary key,
-    codigo_desenvolvedor  integer references desenvolvedores (codigo),
+    desenvolvedor_codigo  integer not null references desenvolvedores (codigo),
     nome varchar(255) not null,
     descricao text,
     data_lancamento date,
