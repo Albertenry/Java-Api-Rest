@@ -1,4 +1,4 @@
--- V1__create-table-jogos.sql
+-- V2__create-table-jogos.sql
 
 create table jogos (
     codigo serial primary key,
